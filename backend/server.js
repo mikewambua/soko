@@ -10,7 +10,7 @@ import orderRouter from './routes/orderRoutes.js';
 dotenv.config();
 
 mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true })
+  .connect(process.env.MONGO_URI_LOCAL, { useNewUrlParser: true })
   .then(() => {
     console.log('Connected to Database');
   })
