@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
@@ -32,21 +32,33 @@ const reducer = (action, state) => {
     case 'UPDATE_FAIL': {
       return { ...state, loadingUpdate: false };
     }
+    case 'UPLOAD_REQUEST': {
+      return { ...state, loadingUpload: true, errorUpload: '' };
+    }
+    case 'UPLOAD_SUCCESS': {
+      return { ...state, loadingUpload: false, errorUpload: '' };
+    }
+    case 'UPLOAD_FAIL': {
+      return { ...state, loadingUpload: false, errorUpload: action.payload };
+    }
     default:
       return state;
   }
 };
+
 const ProductEdit = () => {
+  const navigate = useNavigate();
   const params = useParams(); // /product/:id
   const { id: productId } = params;
 
   const { state } = useContext(Store);
   const { userInfo } = state;
 
-  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      error: '',
+    });
 
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
@@ -100,9 +112,31 @@ const ProductEdit = () => {
       );
       dispatch({ type: 'UPDATE_SUCCESS' });
       toast.success('Producted updated successfully');
+      navigate('/admin/products');
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: 'UPDATE_FAIL' });
+    }
+  };
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_REQUEST' });
+      const { data } = await axios.post('/api/upload', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      dispatch({ type: 'UPLOAD_SUCCESS' });
+      toast.success('Image updated successfully');
+      setImage(data.secure_url);
+    } catch (err) {
+      toast.error(err);
+      dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
     }
   };
 
@@ -143,13 +177,9 @@ const ProductEdit = () => {
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="image">
-            <Form.Label>Select Image</Form.Label>
-            <Form.Control
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              required
-            />
+          <Form.Group className="mb-3" controlId="imageFile">
+            <Form.Label>Upload File</Form.Label>
+            <Form.Control type="file" onChange={uploadFileHandler} required />
           </Form.Group>
           <Form.Group className="mb-3" controlId="category">
             <Form.Label>Category</Form.Label>
@@ -158,6 +188,7 @@ const ProductEdit = () => {
               onChange={(e) => setCategory(e.target.value)}
               required
             />
+            {loadingUpload && <Spinner></Spinner>}
           </Form.Group>
           <Form.Group className="mb-3" controlId="brand">
             <Form.Label>Brand</Form.Label>
