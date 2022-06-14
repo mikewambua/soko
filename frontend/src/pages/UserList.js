@@ -7,6 +7,7 @@ import Spinner from '../components/Spinner';
 import Message from '../components/Message';
 import { Store } from '../Store';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -25,6 +26,7 @@ const reducer = (state, action) => {
 };
 
 const UserList = () => {
+  const navigate = useNavigate();
   const { state } = useContext(Store);
   const { userInfo } = state;
 
@@ -78,8 +80,12 @@ const UserList = () => {
                 <td>{user.email}</td>
                 <td>{user.isAdmin ? 'Yes' : 'No'}</td>
                 <td>
-                  <Button type="button" variant="light">
-                    Details
+                  <Button
+                    type="button"
+                    variant="light"
+                    onClick={() => navigate(`/admin/user/${user._id}`)}
+                  >
+                    Edit
                   </Button>
                 </td>
               </tr>

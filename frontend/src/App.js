@@ -31,6 +31,7 @@ import ProductList from './pages/ProductList';
 import ProductEdit from './pages/ProductEdit';
 import OrderList from './pages/OrderList';
 import UserList from './pages/UserList';
+import UserEdit from './pages/UserEdit';
 
 function App() {
   const { state, dispatch: contextDispatch } = useContext(Store);
@@ -237,6 +238,14 @@ function App() {
                 element={
                   <AdminRoute>
                     <UserList />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/user/:id"
+                element={
+                  <AdminRoute>
+                    <UserEdit />
                   </AdminRoute>
                 }
               />
