@@ -29,6 +29,7 @@ import AdminRoute from './components/AdminRoute';
 import Dashboard from './pages/Dashboard';
 import ProductList from './pages/ProductList';
 import ProductEdit from './pages/ProductEdit';
+import OrderList from './pages/OrderList';
 
 function App() {
   const { state, dispatch: contextDispatch } = useContext(Store);
@@ -219,6 +220,14 @@ function App() {
                 element={
                   <AdminRoute>
                     <ProductEdit />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/orders"
+                element={
+                  <AdminRoute>
+                    <OrderList />
                   </AdminRoute>
                 }
               />

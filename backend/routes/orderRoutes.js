@@ -7,6 +7,16 @@ import { isAuth, isAdmin } from '../utils/utils.js';
 
 const orderRouter = express.Router();
 
+orderRouter.get(
+  '/',
+  isAuth,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const orders = await Order.find().populate('user', 'name');
+    res.send(orders);
+  })
+);
+
 orderRouter.post(
   '/',
   isAuth,
