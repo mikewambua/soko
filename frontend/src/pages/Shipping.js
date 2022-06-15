@@ -10,6 +10,7 @@ const Shipping = () => {
   const { state, dispatch: contextDispatch } = useContext(Store);
   const {
     userInfo,
+    fullBox,
     cart: { shippingAddress },
   } = state;
 
@@ -23,24 +24,39 @@ const Shipping = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!userInfo) {
-      navigate('/signin?redirect=/shipping');
-    }
-  }, [userInfo, navigate]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     contextDispatch({
       type: 'SAVE_SHIPPING_ADDRESS',
-      payload: { fullName, address, city, postalCode, country },
+      payload: {
+        fullName,
+        address,
+        city,
+        postalCode,
+        country,
+        location: shippingAddress.location,
+      },
     });
     localStorage.setItem(
       'shipping-address',
-      JSON.stringify({ fullName, address, city, postalCode, country })
+      JSON.stringify({
+        fullName,
+        address,
+        city,
+        postalCode,
+        country,
+        location: shippingAddress.location,
+      })
     );
     navigate('/payment');
   };
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate('/signin?redirect=/shipping');
+    }
+    contextDispatch({ type: 'SET_FULLBOX_OFF' });
+  }, [userInfo, navigate, contextDispatch, fullBox]);
 
   return (
     <div>
@@ -92,9 +108,27 @@ const Shipping = () => {
             />
           </Form.Group>
           <div className="mb-3">
+            <Button
+              id="chooseOnMap"
+              type="button"
+              variant="light"
+              onClick={() => navigate('/map')}
+            >
+              Choose Location on Map
+            </Button>
+          </div>
+          <div className="mb-3">
             <Button variant="primary" type="submit">
               Continue
             </Button>
+            {shippingAddress.location && shippingAddress.location.lat ? (
+              <div>
+                LAT:{shippingAddress.location.lat}
+                LNG:{shippingAddress.location.lng}
+              </div>
+            ) : (
+              <div>No location</div>
+            )}
           </div>
         </Form>
       </div>

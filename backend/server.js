@@ -25,6 +25,9 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/api/keys/paypal', (req, res) => {
   res.send(process.env.PAYPAL || 'sb');
 });
+app.get('/api/keys/google', (req, res) => {
+  res.send(process.env.GOOGLE_API_KEY || '');
+});
 
 app.use('/api/upload', uploadRouter);
 app.use('/api/seed', seedRouter);

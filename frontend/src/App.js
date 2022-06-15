@@ -32,10 +32,11 @@ import ProductEdit from './pages/ProductEdit';
 import OrderList from './pages/OrderList';
 import UserList from './pages/UserList';
 import UserEdit from './pages/UserEdit';
+import Map from './pages/Map';
 
 function App() {
   const { state, dispatch: contextDispatch } = useContext(Store);
-  const { cart, userInfo } = state;
+  const { fullBox, cart, userInfo } = state;
 
   const handleSignOut = () => {
     contextDispatch({ type: 'USER_SIGNOUT' });
@@ -65,8 +66,12 @@ function App() {
       <div
         className={
           sidebarIsOpen
-            ? 'd-flex flex-column site-container active-container'
-            : 'd-flex flex-column site-container'
+            ? fullBox
+              ? 'site-container active-container d-flex flex-column full-box'
+              : 'site-container active-container d-flex flex-column'
+            : fullBox
+            ? 'site-container d-flex flex-column full-box'
+            : 'site-container d-flex flex-column'
         }
       >
         <ToastContainer position="bottom-center" limit={1} />
@@ -196,6 +201,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/map"
+                element={
+                  <ProtectedRoute>
+                    <Map />
                   </ProtectedRoute>
                 }
               />

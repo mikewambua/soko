@@ -146,7 +146,7 @@ const ProductEdit = () => {
         <title>Edit Product {productId}</title>
       </Helmet>
       <h3>Edit Product {productId}</h3>
-
+      {loadingUpdate && <Spinner />}
       {loading ? (
         <Spinner></Spinner>
       ) : error ? (

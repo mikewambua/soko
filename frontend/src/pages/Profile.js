@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import getError from '../utils/Utils';
+import Spinner from '../components/Spinner';
 import axios from 'axios';
 
 const reducer = (state, action) => {
@@ -65,6 +66,7 @@ const Profile = () => {
         <title>Soko | Profile</title>
       </Helmet>
       <h3 className="my-3">Profile</h3>
+      {loadingUpdate && <Spinner></Spinner>}
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Name</Form.Label>
