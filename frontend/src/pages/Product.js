@@ -106,7 +106,7 @@ export default function Product() {
       }
     };
     fetchData();
-  }, [slug, userInfo]);
+  }, [slug]);
 
   const addToCart = async () => {
     const existingItem = cart.cartItems.find(
@@ -201,10 +201,7 @@ export default function Product() {
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
                     <div className="d-grid">
-                      <Button
-                        onClick={() => addToCart(product)}
-                        variant="primary"
-                      >
+                      <Button onClick={addToCart} variant="primary">
                         Add to Cart
                       </Button>
                     </div>

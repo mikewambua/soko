@@ -43,10 +43,10 @@ const prices = [
 ];
 
 export const ratings = [
-  { name: '4 stars & up', value: 4 },
-  { name: '3 stars & up', value: 3 },
-  { name: '2 stars & up', value: 2 },
-  { name: '1 stars & up', value: 1 },
+  { name: '4 stars & up', rating: 4 },
+  { name: '3 stars & up', rating: 3 },
+  { name: '2 stars & up', rating: 2 },
+  { name: '1 stars & up', rating: 1 },
 ];
 
 const SearchPage = () => {
@@ -166,16 +166,18 @@ const SearchPage = () => {
                       `${rat.rating}` === `${rating}` ? 'text-bold' : ''
                     }
                   >
-                    <Rating caption={'  & up'} rating={rat.rating}></Rating>
-                  </Link>
-                  <Link
-                    to={getFilterUrl({ rating: 'all' })}
-                    className={rating === 'all' ? 'text-bold' : ''}
-                  >
-                    <Rating caption={' & up'} rating={0}></Rating>
+                    <Rating caption={' & up'} rating={rat.rating}></Rating>
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  to={getFilterUrl({ rating: 'all' })}
+                  className={rating === 'all' ? 'text-bold' : ''}
+                >
+                  <Rating caption={' & up'} rating={0}></Rating>
+                </Link>
+              </li>
             </ul>
           </div>
         </Col>
@@ -240,7 +242,9 @@ const SearchPage = () => {
                     <Button
                       className={Number(page) === a + 1 ? 'text-bold' : ''}
                       variant="light"
-                    ></Button>
+                    >
+                      {a + 1}
+                    </Button>
                   </LinkContainer>
                 ))}
               </div>

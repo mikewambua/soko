@@ -76,7 +76,7 @@ function App() {
       >
         <ToastContainer position="bottom-center" limit={1} />
         <header>
-          <Navbar bg="dark" variant="dark" expand="lg" className="fixed-top">
+          <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
             <Container>
               <Button
                 variant="dark"
@@ -265,11 +265,12 @@ function App() {
             </Routes>
           </Container>
         </main>
-        <footer>
-          <div className="text-center">
-            All Rights Reserved | Privacy Policy
+        <footer className="bg-dark text-white fixed-bottom text-center ">
+          <div className="mt-3 d-flex align-items-center justify-content-center">
+            <p>Copyright&copy;2022 | </p>
+            {'   '}
+            <p> All Rights Reserved | Privacy Policy</p>
           </div>
-          <div className="text-center">Copyright&copy;2022</div>
         </footer>
       </div>
     </BrowserRouter>

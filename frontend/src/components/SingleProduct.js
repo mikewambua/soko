@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useContext } from 'react';
 import { Store } from '../Store';
+import Rating from '../components/Rating';
 
 const SingleProduct = (props) => {
   const { product } = props;
@@ -13,7 +14,7 @@ const SingleProduct = (props) => {
   } = state;
 
   const addToCart = async (item) => {
-    const existingItem = cartItems.find((item) => item._id === product._id);
+    const existingItem = cartItems.find((prod) => prod._id === product._id);
     const quantity = existingItem ? existingItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
@@ -32,6 +33,7 @@ const SingleProduct = (props) => {
         <Link to={`/product/${product.slug}`}>
           <Card.Title>{product.name}</Card.Title>
         </Link>
+        <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text>
           <strong>${product.price}</strong>
         </Card.Text>
